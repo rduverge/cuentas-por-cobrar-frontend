@@ -1,9 +1,18 @@
 import useAccountingEntry from "../../hooks/useAccountingEntry"
 
-const AccountingEntry = ({accountingEntry}) => {
 
+const AccountingEntry = ({ accountingEntry }) => {
+    const { accountingEntryId, description, customerId, account, movementType, accountEntryAmount, accountEntryDate, state } = accountingEntry;
+  
+    
     const { setEdit, deleteAccountingEntry } = useAccountingEntry(); 
-    const { accountingEntryId, description, customerId, account, movementType, accountingEntryDate, accountingEntryAmount, state } = accountingEntry;
+   
+    const formatDate = (date) => {
+        const newDate = new Date(date); 
+        return new Intl.DateTimeFormat('es-Es', { dateStyle: 'long' }).format(newDate);
+
+        
+    }
   return (
       
           <tr>
@@ -29,13 +38,14 @@ const AccountingEntry = ({accountingEntry}) => {
                   
               </td>
               
-              <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                   {accountingEntryDate}
+          <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+              {formatDate(accountEntryDate)}
+                  
                   
               </td>
 
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                   {accountingEntryAmount}
+                   {accountEntryAmount}
                   
               </td>
 
@@ -61,4 +71,4 @@ const AccountingEntry = ({accountingEntry}) => {
   )
 }
 
-export default Document;
+export default AccountingEntry;

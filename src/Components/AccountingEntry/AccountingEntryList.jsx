@@ -3,6 +3,8 @@ import useAccountingEntry from '../../hooks/useAccountingEntry'
 import AccountingEntry from './AccountingEntry';
 const AccountingEntryList = () => {
 
+   
+
     const { accountingEntries } = useAccountingEntry();
   return (
       <>
@@ -50,10 +52,10 @@ const AccountingEntryList = () => {
                                           </tr>
                                       </thead>
                                       <tbody className='divide-y divide-gray-200'>
-                                          {accountingEntries.map(accE => (
+                                          {accountingEntries.map(accountingEntry => (
                                               <AccountingEntry
-                                                  key={accE.accountingEntryId}
-                                                  AccountingEntry={accE}
+                                                  key={accountingEntry.accountingEntryId}
+                                                  accountingEntry={accountingEntry}
                                               />
                                           ))}
                                       

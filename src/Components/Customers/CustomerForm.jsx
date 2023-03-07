@@ -8,7 +8,7 @@ import STATE from "../../helpers/STATE";
 const CustomerForm = () => {
 
     const [open, setOpen] = useState(false); 
-    const [customerId, setCustomerId] = useState(''); 
+    const [customerId, setCustomerId] = useState(0); 
     const [name, setName] = useState('');
     const [identification, setIdentification] = useState(''); 
     const [creditLimit, setCreditLimit] = useState(0); 

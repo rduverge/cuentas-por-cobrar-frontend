@@ -17,6 +17,7 @@ const AccountingEntryProvider=({children}) =>{
             
             const {data}= await axiosClient('/accountingEntries',config);
             setAccountingEntries(data);
+            console.log(data);
         } catch(error){
             console.log(error);
         }
@@ -25,18 +26,19 @@ const AccountingEntryProvider=({children}) =>{
     const saveAccountingEntry = async(accountingEntry)=>{
         // const token = localStorage.getItem('token');
 
-        if(accountingEntry.id){
+        if(accountingEntry.accountingEntryId){
             try{
-                const { data } = await axiosClient.put(`accountingEntries/${accountingEntry.id}`, accountingEntry, config);
-                const updatedAccountingEntry = accountingEntries.map(accountingEntryState => accountingEntryState.id === data.id? data:accountingEntryState)
+                const { data } = await axiosClient.put(`/accountingEntries/${accountingEntry.accountingEntryId}`, accountingEntry, config);
+                const updatedAccountingEntry = accountingEntries.map(accountingEntryState => accountingEntryState.accountingEntryId === data.accountingEntryId? data:accountingEntryState)
                 setAccountingEntries(updatedAccountingEntry);
+                getAccountingEntries();
             }catch(error){
-                console.log(error.response.data.msg);
+                console.log(error);
                 return false;
             }
         } else {
             try {
-                const { data } = await axiosClient.post('accountingEntries', accountingEntry, config);
+                const { data } = await axiosClient.post('/accountingEntries', accountingEntry, config);
                 setAccountingEntries([...accountingEntries, data]);
                 console.log(data); 
             }
@@ -51,13 +53,14 @@ const AccountingEntryProvider=({children}) =>{
 
     const setEdit=(accountingEntry) => setAccountingEntry(accountingEntry);
 
-const deleteAccountingEntry= async id=>{
+const deleteAccountingEntry= async accountingEntryId=>{
     const isConfirmed=confirm('Desea eliminar este asiento contable?');
     if(isConfirmed){
         try{
             const{data}=await axiosClient.delete(`/accountingEntries/${id}`);
-            const updatedAccountingEntry=accountingEntries.filter(accountingEntriesState=>accountingEntriesState.id==id);
+            const updatedAccountingEntry=accountingEntries.filter(accountingEntriesState=>accountingEntriesState.accountingEntryId==accountingEntryId);
             setAccountingEntries(updatedAccountingEntry);
+            getAccountingEntries();
         }catch(error){
             console.log(error);
         }
@@ -70,8 +73,10 @@ const deleteAccountingEntry= async id=>{
             saveAccountingEntry,
             setEdit,
             accountingEntry,
-            deleteAccountingEntry
-        }}></AccountingEntryContext.Provider>
+            deleteAccountingEntry,
+            }}>
+            {children}
+        </AccountingEntryContext.Provider>
     )
 
   

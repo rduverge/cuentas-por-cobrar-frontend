@@ -3,31 +3,34 @@ import { useState, useEffect } from 'react'
 import useAccountingEntry from '../../hooks/useAccountingEntry';
 import AccountingEntry from './AccountingEntry';
 import STATE from '../../helpers/STATE';
+import useCustomer from '../../hooks/useCustomer';
+import moment from 'moment/moment';
 const AccountingEntryForm = () => {
 
     const [open, setOpen] = useState(false); 
-    const [accountingEntryId, setAccountingEntryId] = useState(''); 
+    const [accountingEntryId, setAccountingEntryId] = useState(0); 
     const [description, setDescription] = useState('');
     const [customerField, setCustomers] = useState(); 
     const [account, setAccount] = useState(0); 
     const [movementType, setMovementType] = useState(0); 
-    const [accountingEntryDate, setAccountingEntryDate] = useState(0); 
-    const [accountingEntryAmount, setAccountingEntryAmount] = useState(0);
+    const [accountEntryDate, setAccountEntryDate] = useState(''); 
+    const [accountEntryAmount, setAccountEntryAmount] = useState(0);
     const [state, setState] = useState('');
     const {customers} = useCustomer();
-    const { saveAccountingEntry, accountingEntry} = useAccountingEntry();
+    const { saveAccountingEntry, accountingEntry, accountingEntries} = useAccountingEntry();
 
     useEffect(() => {
         if (accountingEntry?.accountingEntryId) {
             setOpen(true); 
             setDescription(accountingEntry.description);
             //Not sure enough
-            setCustomers(accountingEntry.customerId._id);
+            setCustomers(accountingEntry.customerId);
             setAccount(accountingEntry.account);
             setMovementType(accountingEntry.movementType);
-            setAccountingEntryDate(accountingEntry.accountingEntryDate);
-            setAccountingEntryAmount(accountingEntry.accountingEntryAmount);
+            setAccountEntryDate(moment(accountingEntry.accountingEntryDate).format('YYYY-MM-DD'));
+            setAccountEntryAmount(accountingEntry.accountingEntryAmount);
             setState(accountingEntry.state);
+            setAccountingEntryId(accountingEntry.accountingEntryId);
         }
         
     }, [accountingEntry]);
@@ -35,15 +38,15 @@ const AccountingEntryForm = () => {
     const handleSubmit = async e => {
         e.preventDefault(); 
 
-        let result = await saveAccountingEntry({ description, customerId, account, movementType, accountingEntryDate, accountingEntryAmount, state }); 
+        let result = await saveAccountingEntry({accountingEntryId, description, customerField, account, movementType, accountEntryDate, accountEntryAmount, state }); 
         if (result) {
             console.log('Vamos bien :s'); 
             setDescription(''); 
             setCustomers(); 
             setAccount('');
             setMovementType('');
-            setAccountingEntryDate('');
-            setAccountingEntryAmount(0);
+            setAccountEntryDate('');
+            setAccountEntryAmount(0);
             setState();
         };
 
@@ -54,6 +57,8 @@ const AccountingEntryForm = () => {
         const values = e.target.value; 
         setState(values)
     }; 
+    const onCustomersChanged = e => setCustomers(e.target.value); 
+    
 
    
 
@@ -82,11 +87,16 @@ const AccountingEntryForm = () => {
                   <hr />
 
                   <div className='flex flex-col gap-2'>
-                      <label htmlFor='customers'>Introduzca el cliente. </label>
-                      <input id="customers" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
-                          value={customers}
-                          onChange={e=>setCustomers(e.target.value)}
-                      />
+                      <label htmlFor='customers'>Seleccione el cliente. </label>
+                      <select id="customers"  className='py-2 px-4 border border-gray-200 rounded-lg'
+                          value={customerField}
+                          onChange={onCustomersChanged}
+                          >
+                              {accountingEntries.map(ac => (
+                                  <option key={ac.customerId} value={ac.customerId}>{}</option>
+                              ))}
+                              
+                      </select>
                   </div>
                       <hr />
 
@@ -110,9 +120,9 @@ const AccountingEntryForm = () => {
 
                     <div className='flex flex-col gap-2'>
                       <label htmlFor='accountingEntryDate'>Introduzca la Fecha del Asiento. </label>
-                      <input id="accountingEntryDate" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
-                          value={accountingEntryDate}
-                          onChange={e=>setAccountingEntryDate(e.target.value)}
+                      <input id="accountingEntryDate" type="date" className='py-2 px-4 border border-gray-200 rounded-lg'
+                          value={accountEntryDate}
+                          onChange={e=>setAccountEntryDate(e.target.value)}
                       />
                     </div>
                         <hr />
@@ -120,8 +130,8 @@ const AccountingEntryForm = () => {
                     <div className='flex flex-col gap-2'>
                       <label htmlFor='accountingEntryAmount'>Introduzca el Monto del Asiento. </label>
                       <input id="accountingEntryAmount" type="number" className='py-2 px-4 border border-gray-200 rounded-lg'
-                          value={accountingEntryAmount}
-                          onChange={e=>setAccountingEntryAmount(e.target.value)}
+                          value={accountEntryAmount}
+                          onChange={e=>setAccountEntryAmount(e.target.value)}
                       />
                     </div>
                         <hr />
@@ -162,4 +172,4 @@ const AccountingEntryForm = () => {
   )
 }
 
-export default AccountingEntryForm
+export default AccountingEntryForm;

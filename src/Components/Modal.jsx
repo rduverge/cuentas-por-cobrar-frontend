@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Modal = ({children}) => {
+const ModalForm = ({children}) => {
     return (
         <div className='relative z-50'>
             <div className='fixed inset-0 bg-black/10' aria-hidden="true" />
@@ -17,4 +17,4 @@ const Modal = ({children}) => {
   )
 }
 
-export default Modal
+export default ModalForm

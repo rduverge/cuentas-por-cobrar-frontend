@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axiosClient from "../config/axios";
+import config from "../config/header";
 
 const TransactionContext=createContext();
 const TransactionProvider = ({children}) => {
@@ -8,27 +9,28 @@ const TransactionProvider = ({children}) => {
     const[transaction, setTransaction]=useState({});
 
     useEffect(()=>{
-        const getTransactions = async()=>{
-            try{
-
-                const {data}= await axiosClient('/transactions');
-
-                setTransactions(data);
-            }
-            catch(error){
-                console.log(error);
-            }
-        }
+       
         getTransactions();
     }, []);
 
+    const getTransactions = async()=>{
+        try{
+
+            const {data}= await axiosClient('/transactions',config);
+
+            setTransactions(data);
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
     const saveTransaction= async(transaction)=>{
-        const token=localStorage.getItem('token');
-        
+     
         if(transaction.id){
             try{
-                const{data} = await axiosClient.put(`/transactions/${transaction.id}`, transaction);
-                const updatedTransaction = transactions.map(transactionState=>transaction._id === data._id? data:transactionState);
+                const{data} = await axiosClient.put(`/transactions/${transaction.id}`, transaction,config);
+                const updatedTransaction = transactions.map(transactionState=>transaction.id === data.id? data:transactionState);
                 setTransactions(updatedTransaction);
             }catch(error){
                 console.log(error);
@@ -46,7 +48,7 @@ const TransactionProvider = ({children}) => {
         if(isConfirmed){
             try{
                 
-                const{data} = await axiosClient.delete(`/transactions/${id}`);
+                const{data} = await axiosClient.delete(`/transactions/${id}`,config);
                 const updatedTransaction = transactions.filter(transactionsState=>transactionsState._id !== id);
                 setTransactions(updatedTransaction);
             }catch(error){

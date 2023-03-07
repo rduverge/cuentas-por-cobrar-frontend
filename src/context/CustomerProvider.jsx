@@ -9,25 +9,27 @@ const CustomerProvider = ({children}) => {
     const[customer, setCustomer] = useState({});
 
     useEffect(()=>{
-        const getCustomers= async()=>{
-            try{
-            
-                const{data}=await axiosClient('/customers', config);
-                setCustomers(data);
-            } catch(error){
-                console.log(error);
-            }
-        }
+
         getCustomers();
     }, []);
-    
+
+    const getCustomers= async()=>{
+        try{
+
+            const{data}=await axiosClient('/customers', config);
+            setCustomers(data);
+        } catch(error){
+            console.log(error);
+        }
+    }
+
 
     const saveCustomer= async(customer)=>{
-       
+
         if(customer.id){
             try{
                 const{data}= await axiosClient.put(`/customers/${customer.id}`, customer, config);
-                const updatedCustomer = customers.map(customersState=>customersState._id === data._id? data:customersState);
+                const updatedCustomer = customers.map(customersState=>customersState.id === data.id? data:customersState);
                 setCustomers(updatedCustomer);
                 getCustomers();
             } catch(error){
@@ -36,12 +38,12 @@ const CustomerProvider = ({children}) => {
             }
         } else{
             try{
-                const{data} = await axiosClient.post('/customers', customer);
-                const{createdAt, updatedAt, __v, ...savedCustomer}=data;
-                setCustomers([savedCustomer,...customers]);
-                getCustomers();
+                const{data} = await axiosClient.post('/customers', customer,config);
+
+                setCustomers([...documents,data]);
+                // getCustomers();
             } catch(error){
-                console.log(error);
+                console.error(error);
                 return false;
             }
         }
@@ -52,9 +54,9 @@ const CustomerProvider = ({children}) => {
         const isConfirmed = confirm('Desea eliminar este Cliente?');
         if(isConfirmed){
             try{
-                
-                const{data} = await axiosClient.delete(`/customers/${id}`);
-                const updatedCustomer= customers.filter(customersState=>customersState._id !== id);
+
+                const{data} = await axiosClient.delete(`/customers/${id}`,config);
+                const updatedCustomer= customers.filter(customersState=>customersState.id !==id);
                 setCustomers(updatedCustomer);
             } catch(error){
                 console.log(error);

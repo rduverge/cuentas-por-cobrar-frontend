@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axiosClient from "../config/axios";
+import config from "../config/header";
 
 const CustomerContext=createContext();
 const CustomerProvider = ({children}) => {
@@ -11,7 +12,7 @@ const CustomerProvider = ({children}) => {
         const getCustomers= async()=>{
             try{
             
-                const{data}=await axiosClient('customers');
+                const{data}=await axiosClient('/customers', config);
                 setCustomers(data);
             } catch(error){
                 console.log(error);

@@ -34,7 +34,7 @@ const DocumentProvider = ({children}) => {
                 const{data} = await axiosClient.put(`/documents/${document.documentId}`, document, config);
                 const updatedDocument=document.map(documentState=>documentState.documentId === data.documentId?data:documentState);
                 setDocuments(updatedDocument);
-                //getDocuments();
+                getDocuments();
             }catch(error){
                 console.log(error);
                 return false; 

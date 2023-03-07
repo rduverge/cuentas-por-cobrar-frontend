@@ -7,7 +7,7 @@ import STATE from '../../helpers/STATE';
 const DocumentForm = () => {
 
     const [open, setOpen] = useState(false); 
-    const [documentId, setDocumentId] = useState(''); 
+    const [documentId, setDocumentId] = useState(0); 
     const [description, setDescription] = useState('');
     const [ledgerAccount, setLedgerAccount] = useState(0); 
     const [state, setState] = useState('');
@@ -19,7 +19,7 @@ const DocumentForm = () => {
             setDescription(document.description);
             setLedgerAccount(document.ledgerAccount);
             setState(document.state);
-            // setDocumentId(document.documentId);
+             setDocumentId(document.documentId);
         }
         
     }, [document]);
@@ -27,7 +27,7 @@ const DocumentForm = () => {
     const handleSubmit = async e => {
         e.preventDefault(); 
 
-        let result = await saveDocument({ description, ledgerAccount, state }); 
+        let result = await saveDocument({ documentId,description, ledgerAccount, state }); 
         if (result) {
             console.log('Lo estas logrando!'); 
             setDescription(''); 

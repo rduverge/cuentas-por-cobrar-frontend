@@ -3,6 +3,7 @@ import { useState } from 'react'
 import DocumentManagement from './pages/DocumentManagement'
 import MainLayout from './Layout/MainLayout'
 import { BrowserRouter,Route, Routes } from 'react-router-dom'
+import CustomerManagement from './pages/CustomerManagent'
 
 function App() {
   
@@ -10,7 +11,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<DocumentManagement/>}/>
+          <Route path='documents' element={<DocumentManagement />} />
+          <Route path='customers' element={<CustomerManagement/>}/>
+          
         </Route>
       </Routes>
     </BrowserRouter>

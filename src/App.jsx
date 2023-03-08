@@ -5,6 +5,7 @@ import AccountingEntryManagement from './pages/AccountingEntryManagement'
 import MainLayout from './Layout/MainLayout'
 import { BrowserRouter,Route, Routes } from 'react-router-dom'
 import CustomerManagement from './pages/CustomerManagent'
+import TransactionManagement from './pages/TransactionManagement'
 
 function App() {
   
@@ -15,7 +16,7 @@ function App() {
           <Route path='documents' element={<DocumentManagement />} />
           <Route path='customers' element={<CustomerManagement/>}/>
           <Route path='accountingEntries' element={<AccountingEntryManagement/>}/>
-          
+          <Route path='transactions' element={<TransactionManagement/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

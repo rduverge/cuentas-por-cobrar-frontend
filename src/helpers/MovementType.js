@@ -1,6 +1,6 @@
 const MOVEMENT_TYPES = {
-    Debit: 'Debit', 
-    Credit: 'Credit'
+    Debito: 'Debito', 
+    Credito: 'Credito'
 }
 
 export default MOVEMENT_TYPES;

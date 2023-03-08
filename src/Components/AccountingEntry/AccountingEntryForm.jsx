@@ -5,6 +5,7 @@ import AccountingEntry from './AccountingEntry';
 import STATE from '../../helpers/STATE';
 import useCustomer from '../../hooks/useCustomer';
 import moment from 'moment/moment';
+import MOVEMENT_TYPES from '../../helpers/MovementType';
 const AccountingEntryForm = () => {
 
     const [open, setOpen] = useState(false); 
@@ -53,10 +54,16 @@ const AccountingEntryForm = () => {
         setOpen(false); 
 
     }
+    const onMovementTypeChanged = e => {
+        const values = e.target.value; 
+        setMovementType(values)
+    };  
+
     const onStateChanged = e => {
         const values = e.target.value; 
         setState(values)
     }; 
+
     const onCustomersChanged = e => setCustomers(e.target.value); 
     
 
@@ -93,7 +100,7 @@ const AccountingEntryForm = () => {
                           onChange={onCustomersChanged}
                           >
                               {accountingEntries.map(ac => (
-                                  <option key={ac.customerId} value={ac.customerId}>{}</option>
+                                  <option key={ac.customerId} value={ac.customerId}>{ac.customerId.name}</option>
                               ))}
                               
                       </select>
@@ -109,14 +116,22 @@ const AccountingEntryForm = () => {
                     </div>
                       <hr />
                     
-                    <div className='flex flex-col gap-2'>
-                      <label htmlFor='movementType'>Introduzca el Tipo de Movimiento. </label>
-                      <input id="movementType" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
-                          value={movementType}
-                          onChange={e=>setMovementType(e.target.value)}
-                      />
-                    </div>
-                      <hr />
+                      <div className='flex flex-col gap-2'>
+                      <label htmlFor='movementType'>Elige Tipo de Movimiento. </label>
+                      <select id='movementType'
+                            className='py-2 px-4 border border-gray-200 rounded-lg'
+                            value={movementType}
+                            onChange={onMovementTypeChanged}>
+                            
+                            <option value="Seleccione">Seleccione un Tipo de Movimiento</option>
+                            {Object.values(MOVEMENT_TYPES).map(movement_type =>(
+                                <option key={movement_type} value={movement_type}>{movement_type}</option>
+                            ))}
+
+                      </select>
+
+                  </div>
+                  <hr />
 
                     <div className='flex flex-col gap-2'>
                       <label htmlFor='accountingEntryDate'>Introduzca la Fecha del Asiento. </label>

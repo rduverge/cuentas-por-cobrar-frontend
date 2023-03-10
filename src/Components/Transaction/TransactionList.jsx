@@ -5,7 +5,7 @@ const TransactionList = () => {
     const { transactions } = useTransaction();
   return (
       <>
-          {transaction.length ? (
+          {transactions.length ? (
               <>
                   <div className='flex flex-col'>
                       <div className='overflow-x-auto'>

@@ -1,8 +1,10 @@
 import Modal from '../Modal'
 import { useState, useEffect, useTransition } from 'react'
-import useTransaction from '../../hooks/useTransaction';
+import useDocument from '../../hooks/useDocument';
+import useCustomer from '../../hooks/useCustomer';
 import Transaction from './Transaction';
 import MOVEMENT_TYPES from '../../helpers/MovementType';
+import STATE from '../../helpers/STATE';
 const TransactionForm = () => {
 
     const [open, setOpen] = useState(false); 
@@ -13,6 +15,7 @@ const TransactionForm = () => {
     const [transactionDate, setTransactionDate] = useState(0); 
     const [customerField, setCustomers] = useState(); 
     const [amount, setAmount] = useState(0);
+    const [state, setState] = useState('');
     
     const {documents} = useDocument();
     const {customers} = useCustomer();
@@ -54,6 +57,10 @@ const TransactionForm = () => {
         setMovementType(values)
     }; 
 
+    const onStateChanged = e => {
+        const values = e.target.value; 
+        setState(values)
+    };
    
 
   return (
@@ -98,7 +105,7 @@ const TransactionForm = () => {
 
                   <div className='flex flex-col gap-2'>
                       <label htmlFor='transactionDate'>Introduzca la Fecha de la Transacción. </label>
-                      <input id="transactionDate" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
+                      <input id="transactionDate" type="date" className='py-2 px-4 border border-gray-200 rounded-lg'
                           value={transactionDate}
                           onChange={e=>setTransactionDate(e.target.value)}
                       />
@@ -115,7 +122,7 @@ const TransactionForm = () => {
                   <hr />
 
                   <div className='flex flex-col gap-2'>
-                      <label htmlFor='amount'>Introduzca el cliente. </label>
+                      <label htmlFor='amount'>Introduzca el monto. </label>
                       <input id="amount" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
                           value={amount}
                           onChange={e=>setAmount(e.target.value)}
@@ -159,4 +166,4 @@ const TransactionForm = () => {
   )
 }
 
-export default AccountingEntryForm
+export default TransactionForm

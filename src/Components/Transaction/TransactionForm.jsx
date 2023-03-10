@@ -71,19 +71,22 @@ const TransactionForm = () => {
   return (
       <div className='relative min-h-scr'>
           <div className=' flex-col mx-auto my-2'>
-              <button onClick={()=>setOpen(!open)} className="Py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full">Agregar Transacción</button>
+              <button onClick={()=>setOpen(!open)} className="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full">Agregar Transacción</button>
           </div>
 
           {open ? <Modal>
               <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
-                  <h1 className='text-lg text-black mt-2 pr-48'> Agregue una Transacción</h1>
+                  <h1 className='text-lg text-black mt-2  text-center font-bold'> Agregue una Transacción</h1>
                   <hr />
 
                   <form
                       onSubmit={handleSubmit}
                   > 
-                  <div className='flex flex-col gap-2'>
-                      <label htmlFor='movementType'>Elige Tipo de Movimiento. </label>
+                  
+                  <div className='flex flex-col gap-2 pb-4'>
+                          <label
+                              className=''
+                              htmlFor='movementType'>Elige Tipo de Movimiento. </label>
                       <select id='movementType'
                             className='py-2 px-4 border border-gray-200 rounded-lg'
                             value={movementType}
@@ -99,7 +102,7 @@ const TransactionForm = () => {
                   </div>
                   <hr />
 
-                  <div className='flex flex-col gap-2'>
+                  <div className='flex flex-col gap-2 pb-4'>
                       <label htmlFor='documentId'>Selecciona un tipo de documento. </label>
                       <select id="documents" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
                           value={documentField}
@@ -111,7 +114,7 @@ const TransactionForm = () => {
                           ))}</select>
                   </div>
                   <hr/>
-
+                  <div className='flex flex-col-2 gap-4 pb-4'>
                   <div className='flex flex-col gap-2'>
                       <label htmlFor='transactionDate'>Introduzca la Fecha de la Transacción. </label>
                       <input id="transactionDate" type="date" className='py-2 px-4 border border-gray-200 rounded-lg'
@@ -131,30 +134,30 @@ const TransactionForm = () => {
                               {customers.map(ac => (
                               <option key={ac.customerId} value={ac.customerId}>{ac.name}</option>
                           ))}</select>
-                  </div>
+                          </div>
+                          </div>
                   <hr/>
 
 
-                  <div className='flex flex-col gap-2'>
-                      <label htmlFor='amount'>Introduzca el monto. </label>
+                
+                      <div className='flex flex-col-2 gap-4 pb-4'>
+                      <div className='flex flex-col gap-2'>
+                              <label
+                                  className='text-center'
+                                  htmlFor='amount'>Introduzca el monto. </label>
                       <input id="amount" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
                           value={amount}
                           onChange={e=>setAmount(e.target.value)}
                       />
                   </div>
                       <hr />
-
-                      <div className='flex flex-col gap-2'>
-                      <label htmlFor='documentNumber'>Numero de documento:. </label>
-                      <input readOnly id="amount" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
-                          value={documentNumber}
-                          onChange={e=>setDocumentNumber(e.target.value)}
-                      />
-                  </div>
-                      <hr />
                       
+                          
+                     
                     <div className='flex flex-col gap-2'>
-                        <label htmlFor='state'>Elige el estado </label>
+                              <label
+                                  className='text-center'
+                                  htmlFor='state'>Estado </label>
                         <select id="state"
                             className='py-2 px-4 border border-gray-200 rounded-lg'
                             value={state}
@@ -168,15 +171,26 @@ const TransactionForm = () => {
                     </select>
                           
                   
+                          </div>
+                          </div>
+                      <hr />
+                      <div className='flex flex-col gap-2 pb-4'>
+                          <label
+                                className='text-center'
+                                htmlFor='documentNumber'>Numero de documento: </label>
+                      <input readOnly id="amount" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
+                          value={documentNumber}
+                          onChange={e=>setDocumentNumber(e.target.value)}
+                      />
                   </div>
-                  <hr />
+                      <hr />
 
                  
                   <div className='flex flex-row gap-2 pt-6'>
-                      <button onClick={() => setOpen(!open)} className="flex-1 py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-bold text-lg rounded-full">Close</button>
+                      <button onClick={() => setOpen(!open)} className="flex-1 py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-bold text-lg rounded-full">Cerrar</button>
                           <input
                               type='submit'
-                              value="Save"
+                              value="Guardar"
                               className="flex-1 py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full" />
                       </div>
                       </form>

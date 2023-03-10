@@ -85,20 +85,20 @@ const AccountingEntryForm = () => {
 
   return (
       <div className='relative min-h-scr'>
-          <div className=' flex-col  my-2'>
-              <button onClick={()=>setOpen(!open)} className="Py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full">Agregar Asiento Contable</button>
+          <div className=' flex-col pt-4 pb-4  my-2'>
+              <button onClick={()=>setOpen(!open)} className="py-3 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full">Agregar Asiento Contable</button>
           </div>
 
           {open ? <Modal>
               <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
-                  <h1 className='text-lg text-black mt-2 pr-48'> Agregue un Asiento Contable</h1>
+                  <h1 className='text-lg text-center text-black mt-2  font-bold'> Agregue un Asiento Contable</h1>
                   <hr />
 
                   <form
                       onSubmit={handleSubmit}
                       
                   > 
-                  <div className='flex flex-col gap-2'>
+                  <div className='flex flex-col gap-2 pb-4'>
                       <label htmlFor='description'>Introduzca una descripcion. </label>
                       <input id="description" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
                           value={description}
@@ -106,9 +106,11 @@ const AccountingEntryForm = () => {
                       />
                   </div>
                   <hr />
-
+                  <div className='flex flex-col-2 gap-4 pb-4'>
                   <div className='flex flex-col gap-2'>
-                      <label htmlFor='customers'>Seleccione el cliente. </label>
+                              <label
+                                  className='text-right'
+                                  htmlFor='customers'>Seleccione el cliente. </label>
                       <select id="customers"  className='py-2 px-4 border border-gray-200 rounded-lg'
                           value={customerField}
                           onChange={onCustomersChanged}
@@ -122,14 +124,17 @@ const AccountingEntryForm = () => {
                       <hr />
 
                     <div className='flex flex-col gap-2'>
-                      <label htmlFor='account'>Introduzca la Cuenta. </label>
-                      <input id="account" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
+                              <label
+                                  className='text-center'
+                                  htmlFor='account'>Introduzca la Cuenta. </label>
+                      <input id="account" type="text" className='py-2  border px-10 border-gray-200 rounded-lg'
                           value={account}
                           onChange={e=>setAccount(e.target.value)}
                       />
-                    </div>
-                      <hr />
-                    
+                          </div>
+                          </div>
+                      <hr/>
+                      <div className='flex flex-col-2 gap-4 pb-4'>
                       <div className='flex flex-col gap-2'>
                       <label htmlFor='movementType'>Elige Tipo de Movimiento. </label>
                       <select id='movementType'
@@ -137,47 +142,57 @@ const AccountingEntryForm = () => {
                             value={movementType}
                             onChange={onMovementTypeChanged}>
                             
-                            <option value="Seleccione">Seleccione un Tipo de Movimiento</option>
+                            <option value="Seleccione">Tipo de Movimiento</option>
                             {Object.values(MOVEMENT_TYPES).map(movement_type =>(
                                 <option key={movement_type} value={movement_type}>{movement_type}</option>
                             ))}
 
-                      </select>
+                              </select>
+                              
 
                   </div>
-                  <hr />
-
+                 
+                    <hr/>
                     <div className='flex flex-col gap-2'>
-                      <label htmlFor='accountingEntryDate'>Introduzca la Fecha del Asiento. </label>
-                      <input id="accountingEntryDate" type="date" className='py-2 px-4 border border-gray-200 rounded-lg'
+                              <label
+                                  className='text-center'
+                                  htmlFor='accountingEntryDate'>Introduzca la Fecha del Asiento. </label>
+                      <input id="accountingEntryDate" type="date" className='py-2   px-14 border border-gray-200 rounded-lg'
                           value={accountEntryDate}
                           onChange={e=>setAccountEntryDate(e.target.value)}
-                      />
-                    </div>
-                        <hr />
-
+                              />
+                             
+                          </div>
+                          
+                          
+                      </div>
+                      <hr/>
+                          <div className='flex flex-col-2 gap-4 pb-4'>
                     <div className='flex flex-col gap-2'>
-                      <label htmlFor='accountingEntryAmount'>Introduzca el Monto del Asiento. </label>
+                      <label htmlFor='accountingEntryAmount'>Monto del Asiento. </label>
                       <input id="accountingEntryAmount" type="number" className='py-2 px-4 border border-gray-200 rounded-lg'
                           value={accountEntryAmount}
                           onChange={e=>setAccountEntryAmount(e.target.value)}
                       />
                     </div>
-                        <hr />
+                        
                       
                     <div className='flex flex-col gap-2'>
-                        <label htmlFor='state'>Elige el estado </label>
+                              <label htmlFor='state'
+                              className='text-center'> Estado </label>
                         <select id="state"
                             className='py-2 px-4 border border-gray-200 rounded-lg'
                             value={state}
-                            onChange={onStateChanged}>
+                                  onChange={onStateChanged}>
+                                  
 
                             <option value="Seleccione">Seleccione un estado</option>
                             {Object.values(STATE).map(state => (
                                 <option key={state} value={state}>{state}</option>
                             ))}
                               
-                    </select>
+                              </select>
+                              </div>
                           
                   
                   </div>
@@ -185,10 +200,10 @@ const AccountingEntryForm = () => {
 
                   
                   <div className='flex flex-row gap-2 pt-6'>
-                      <button onClick={() => setOpen(!open)} className="flex-1 py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-bold text-lg rounded-full">Close</button>
+                      <button onClick={() => setOpen(!open)} className="flex-1 py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-bold text-lg rounded-full">Cerrar</button>
                           <input
                               type='submit'
-                              value="Save"
+                              value="Guardar"
                               className="flex-1 py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full" />
                       </div>
                       </form>

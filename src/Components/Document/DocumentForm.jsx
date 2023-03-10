@@ -48,12 +48,12 @@ const DocumentForm = () => {
   return (
       <div className='relative min-h-scr'>
           <div className=' flex-col  my-2'>
-              <button onClick={()=>setOpen(!open)} className="Py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full">Agregar Documento</button>
+              <button onClick={()=>setOpen(!open)} className="py-3 px-4 bg-blue-500 hover:bg-blue-900  text-white font-bold text-lg rounded-full">Agregar Documento</button>
           </div>
 
           {open ? <Modal>
               <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
-                  <h1 className='text-lg text-black mt-2 pr-48'> Agregue un tipo de documento</h1>
+                  <h1 className='text-xl text-black mt-2 font-bold pr-48'> Agregue un tipo de documento</h1>
                   <hr />
 
                   <form
@@ -98,10 +98,10 @@ const DocumentForm = () => {
 
                   
                   <div className='flex flex-row gap-2 pt-6'>
-                      <button onClick={() => setOpen(!open)} className="flex-1 py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-bold text-lg rounded-full">Close</button>
+                      <button onClick={() => setOpen(!open)} className="flex-1 py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-bold text-lg rounded-full">Cerrar</button>
                           <input
                               type='submit'
-                              value="Save"
+                              value="Guardar"
                               className="flex-1 py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full" />
                       </div>
                       </form>

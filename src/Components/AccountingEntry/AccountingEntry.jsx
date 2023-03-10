@@ -1,7 +1,8 @@
 import { CustomerProvider } from "../../context/CustomerProvider";
 import useAccountingEntry from "../../hooks/useAccountingEntry"
-import useCustomer from "../../hooks/useCustomer";
 
+import StateBadge from "../StateBadge";
+import MovementTypeBadge from "../MovementTypeBadge";
 
 const AccountingEntry = ({ accountingEntry } ) => {
     const { accountingEntryId, description, customerId,customer, account, movementType, accountEntryAmount, accountEntryDate, state } = accountingEntry;
@@ -50,7 +51,7 @@ const AccountingEntry = ({ accountingEntry } ) => {
               </td>
               
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                   {movementType}
+                   <MovementTypeBadge movementType={movementType}/>
                   
               </td>
               
@@ -65,8 +66,9 @@ const AccountingEntry = ({ accountingEntry } ) => {
                   
               </td>
 
-              <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                   {state}
+          <td className="px-6 py-4 text-sm  whitespace-nowrap">
+              <StateBadge state={state} />
+                  
                   
               </td>
 

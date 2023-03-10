@@ -1,5 +1,5 @@
 import useTransaction from "../../hooks/useTransaction"
-
+import MovementTypeBadge from "../MovementTypeBadge";
 const Transaction = ({transaction}) => {
 
     const { setEdit, deleteTransaction } = useTransaction(); 
@@ -17,7 +17,7 @@ const Transaction = ({transaction}) => {
               </td>
              
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                  {movementType}
+                  <MovementTypeBadge movementType={movementType}/>
               </td>
              
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">

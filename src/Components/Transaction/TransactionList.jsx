@@ -25,16 +25,16 @@ const TransactionList = () => {
                                                   className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase'>Tipo de Documento</th>
                                                 <th
                                                   scope="col"
-                                                  className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase'>Numero de Documento</th>
-                                                <th
-                                                    scope="col"
-                                                    className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase'>Fecha de la Transacción</th>
+                                                  className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase'>Fecha de la Transacción</th>
                                                 <th
                                                     scope="col"
                                                     className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase'>Cliente</th>
                                                 <th
+                                                    scope="col"
+                                                    className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase'>Monto</th>
+                                                <th
                                                   scope="col"
-                                                  className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase'>Monto</th>
+                                                  className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase'>Numero del Documento</th>
                                                 
                                                 <th
                                                     scope="col"

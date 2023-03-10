@@ -16,7 +16,7 @@ const Menu = () => {
                         
                         <Link to="/customers" className="text-white text-sm uppercase font-bold">Clientes</Link>
                         <Link to="/accountingEntries" className="text-white text-sm uppercase font-bold">Asientos contables</Link>
-                        <Link to="/transactions" className="text-white text-sm uppercase font-bold">Transacciones</Link>
+                        <Link to="/transaction" className="text-white text-sm uppercase font-bold">Transacciones</Link>
                
               
             </nav>

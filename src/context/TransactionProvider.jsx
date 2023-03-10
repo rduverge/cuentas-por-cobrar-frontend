@@ -16,7 +16,7 @@ const TransactionProvider = ({children}) => {
     const getTransactions = async()=>{
         try{
 
-            const {data}= await axiosClient('/transactions',config);
+            const {data}= await axiosClient('/transaction',config);
 
             setTransactions(data);
         }
@@ -29,7 +29,7 @@ const TransactionProvider = ({children}) => {
      
         if(transaction.transactionId){
             try{
-                const{data} = await axiosClient.put(`/transactions/${transaction.transactionId}`, transaction,config);
+                const{data} = await axiosClient.put(`/transaction/${transaction.transactionId}`, transaction,config);
                 const updatedTransaction = transactions.map(transactionState=>transaction.transactionId === data.transactionId? data:transactionState);
                 setTransactions(updatedTransaction);
                 getTransactions();
@@ -39,9 +39,10 @@ const TransactionProvider = ({children}) => {
             }
         } else {
             try {
-                const { data } = await axiosClient.post('/transactions', transaction, config); 
+                const { data } = await axiosClient.post('/transaction', transaction, config); 
                 setTransactions([...transactions, data]); 
-                console.log(data); 
+              //  console.log(data); 
+                getTransactions();
             } catch (error) {
                 console.log(error); 
                 return false;
@@ -58,7 +59,7 @@ const TransactionProvider = ({children}) => {
         if(isConfirmed){
             try{
                 
-                const{data} = await axiosClient.delete(`/transactions/${transactionId}`,config);
+                const{data} = await axiosClient.delete(`/transaction/${transactionId}`,config);
                 const updatedTransaction = transactions.filter(transactionsState=>transactionsState.transactionId !== transactionId);
                 setTransactions(updatedTransaction);
             }catch(error){

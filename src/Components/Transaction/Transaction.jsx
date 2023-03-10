@@ -3,7 +3,12 @@ import useTransaction from "../../hooks/useTransaction"
 const Transaction = ({transaction}) => {
 
     const { setEdit, deleteTransaction } = useTransaction(); 
-    const { transactionId, movementType, documentId, transactionDate, customerId, amount} = transaction;
+    const { transactionId, movementType,documentNumber, transactionDate, amount, document, customer } = transaction;
+    
+    const formatDate = (date) => {
+        const newDate = new Date(date); 
+        return new Intl.DateTimeFormat('es-Es', { dateStyle: 'long' }).format(newDate); 
+    }
   return (
       
           <tr>
@@ -16,23 +21,28 @@ const Transaction = ({transaction}) => {
               </td>
              
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                  {documentId}
+                  {document.description}
               </td>
              
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                   {transactionDate}
+                   {formatDate(transactionDate)}
                   
               </td>
               
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                   {customerId}
+                   {customer.name}
                   
               </td>
               
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                    {amount}
                   
-              </td>
+          </td>
+          
+          <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+              {documentNumber}
+          </td>
+          
 
               <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                   <button 
@@ -44,7 +54,7 @@ const Transaction = ({transaction}) => {
               <button 
                       type="button"
                       className="text-red-500 hover:Text-red-700 rounded-lg"
-                    onClick={()=>deleteTransaction(transaction)}>Borrar</button>
+                    onClick={()=>deleteTransaction(transactionId)}>Borrar</button>
                   
               </td>
           </tr>

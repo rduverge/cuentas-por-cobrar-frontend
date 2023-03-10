@@ -97,7 +97,7 @@ const DocumentForm = () => {
                   <hr />
 
                   
-                  <div className='flex flex-row gap-2'>
+                  <div className='flex flex-row gap-2 pt-6'>
                       <button onClick={() => setOpen(!open)} className="flex-1 py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-bold text-lg rounded-full">Close</button>
                           <input
                               type='submit'

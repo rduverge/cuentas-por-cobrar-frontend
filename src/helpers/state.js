@@ -1,7 +1,7 @@
 const STATE = {
-    Pending: 'Pending', 
-    Approved: 'Approved', 
-    Denied:'Denied'
+    Pendiente: 'Pendiente', 
+    Aprobado: 'Aprobado', 
+    Rechazado:'Rechazado'
 }
 
 export default STATE;

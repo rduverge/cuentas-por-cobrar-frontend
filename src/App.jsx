@@ -16,7 +16,7 @@ function App() {
           <Route path='documents' element={<DocumentManagement />} />
           <Route path='customers' element={<CustomerManagement/>}/>
           <Route path='accountingEntries' element={<AccountingEntryManagement/>}/>
-          <Route path='transactions' element={<TransactionManagement/>}/>
+          <Route path='transaction' element={<TransactionManagement/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

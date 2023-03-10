@@ -49,7 +49,7 @@ const TransactionList = () => {
                                           {transactions.map(transaction => (
                                               <Transaction
                                                   key={transaction.transactionId}
-                                                  Transaction={transaction}
+                                                  transaction={transaction}
                                               />
                                           ))}
                                       

@@ -1,4 +1,5 @@
 import React from 'react'
+import { CustomerProvider } from '../../context/CustomerProvider';
 import useAccountingEntry from '../../hooks/useAccountingEntry'
 import AccountingEntry from './AccountingEntry';
 const AccountingEntryList = () => {
@@ -6,7 +7,8 @@ const AccountingEntryList = () => {
    
 
     const { accountingEntries } = useAccountingEntry();
-  return (
+    return (
+      
       <>
           {accountingEntries.length ? (
               <>
@@ -73,7 +75,8 @@ const AccountingEntryList = () => {
           
           )}
       
-    </>
+            </>
+            
   )
 }
 

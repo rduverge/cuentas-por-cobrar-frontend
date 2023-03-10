@@ -1,11 +1,20 @@
+import { CustomerProvider } from "../../context/CustomerProvider";
 import useAccountingEntry from "../../hooks/useAccountingEntry"
+import useCustomer from "../../hooks/useCustomer";
 
 
-const AccountingEntry = ({ accountingEntry }) => {
-    const { accountingEntryId, description, customerId, account, movementType, accountEntryAmount, accountEntryDate, state } = accountingEntry;
-  
+const AccountingEntry = ({ accountingEntry } ) => {
+    const { accountingEntryId, description, customerId,customer, account, movementType, accountEntryAmount, accountEntryDate, state } = accountingEntry;
     
+    console.log(accountingEntry);
+   
+  
     const { setEdit, deleteAccountingEntry } = useAccountingEntry(); 
+     
+  
+   
+    
+    
    
     const formatDate = (date) => {
         const newDate = new Date(date); 
@@ -15,6 +24,7 @@ const AccountingEntry = ({ accountingEntry }) => {
     }
   return (
       
+   
           <tr>
               <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
                   {accountingEntryId}
@@ -24,9 +34,15 @@ const AccountingEntry = ({ accountingEntry }) => {
                   {description}
               </td>
              
+             
+             
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                  {customerId}
-              </td>
+              {customer.name}
+              
+              
+                   </td>
+            
+             
              
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                    {account}
@@ -39,13 +55,13 @@ const AccountingEntry = ({ accountingEntry }) => {
               </td>
               
           <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-              {formatDate(accountEntryDate)}
+              {formatDate(  accountEntryDate)}
                   
                   
               </td>
 
               <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                   {accountEntryAmount}
+                   {    accountEntryAmount}
                   
               </td>
 
@@ -68,6 +84,7 @@ const AccountingEntry = ({ accountingEntry }) => {
                   
               </td>
           </tr>
+         
   )
 }
 

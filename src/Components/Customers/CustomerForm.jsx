@@ -25,8 +25,6 @@ const CustomerForm = () => {
             setCustomerId(customer.customerId);
             
             
-
-            
         }
     }, [customer]); 
 

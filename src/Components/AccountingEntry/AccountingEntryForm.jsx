@@ -7,21 +7,23 @@ import useCustomer from '../../hooks/useCustomer';
 import moment from 'moment/moment';
 const AccountingEntryForm = () => {
 
-    const [open, setOpen] = useState(false); 
-    const [accountingEntryId, setAccountingEntryId] = useState(0); 
-    const [description, setDescription] = useState('');
-    const [customerField, setCustomers] = useState(); 
-    const [account, setAccount] = useState(0); 
-    const [movementType, setMovementType] = useState(0); 
-    const [accountEntryDate, setAccountEntryDate] = useState(''); 
+    const [open, setOpen] = useState(false);
+    const [accountingEntryId, setAccountingEntryId] = useState(0);
+    const [description,setDescription] = useState('');
+    const [customerField, setCustomers] = useState({});
+    const [account, setAccount] = useState(0);
+    const [movementType, setMovementType] = useState(0);
+    const [accountEntryDate, setAccountEntryDate] = useState('');
     const [accountEntryAmount, setAccountEntryAmount] = useState(0);
     const [state, setState] = useState('');
-    const {customers} = useCustomer();
-    const { saveAccountingEntry, accountingEntry, accountingEntries} = useAccountingEntry();
+    const { customers} = useCustomer();
+    const { saveAccountingEntry, accountingEntry, accountingEntries } = useAccountingEntry();
+
+
 
     useEffect(() => {
         if (accountingEntry?.accountingEntryId) {
-            setOpen(true); 
+            setOpen(true);
             setDescription(accountingEntry.description);
             //Not sure enough
             setCustomers(accountingEntry.customerId);
@@ -35,11 +37,15 @@ const AccountingEntryForm = () => {
         
     }, [accountingEntry]);
     
+   
     const handleSubmit = async e => {
         e.preventDefault(); 
-
-        let result = await saveAccountingEntry({accountingEntryId, description, customerField, account, movementType, accountEntryDate, accountEntryAmount, state }); 
+        
+        let result = await saveAccountingEntry({ accountingEntryId, description, customerId:customerField, account, movementType, accountEntryDate, accountEntryAmount, state }); 
+        
+        
         if (result) {
+            
             console.log('Vamos bien :s'); 
             setDescription(''); 
             setCustomers(); 
@@ -58,6 +64,14 @@ const AccountingEntryForm = () => {
         setState(values)
     }; 
     const onCustomersChanged = e => setCustomers(e.target.value); 
+
+    // const filteredAccountingEntries = accountingEntries.filter((entry) =>
+    //     (!customerField || entry.customer.customerId === customerField) &&
+    //     (!accountingEntryId ||
+    //         entry.accountingEntryId === parseInt(accountingEntryId))
+    // );
+
+    // const filterActions=  accountingEntries.filter((e)=> e.cus)
     
 
    
@@ -92,8 +106,8 @@ const AccountingEntryForm = () => {
                           value={customerField}
                           onChange={onCustomersChanged}
                           >
-                              {accountingEntries.map(ac => (
-                                  <option key={ac.customerId} value={ac.customerId}>{}</option>
+                              {customers.map(ac => (
+                                  <option key={ac.customerId} value={ac.customerId}>{ac.name}</option>
                               ))}
                               
                       </select>

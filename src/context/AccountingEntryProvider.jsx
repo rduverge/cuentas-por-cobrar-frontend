@@ -12,12 +12,16 @@ const AccountingEntryProvider=({children}) =>{
        
         getAccountingEntries();
     }, []);
+
+
     const getAccountingEntries=async()=>{
         try{
             
             const {data}= await axiosClient('/accountingEntries',config);
             setAccountingEntries(data);
+
             console.log(data);
+           
         } catch(error){
             console.log(error);
         }
@@ -40,7 +44,7 @@ const AccountingEntryProvider=({children}) =>{
             try {
                 const { data } = await axiosClient.post('/accountingEntries', accountingEntry, config);
                 setAccountingEntries([...accountingEntries, data]);
-                console.log(data); 
+               
             }
             catch (error) {
                 console.error(error); 
@@ -57,7 +61,7 @@ const deleteAccountingEntry= async accountingEntryId=>{
     const isConfirmed=confirm('Desea eliminar este asiento contable?');
     if(isConfirmed){
         try{
-            const{data}=await axiosClient.delete(`/accountingEntries/${id}`);
+            const{data}=await axiosClient.delete(`/accountingEntries/${accountingEntryId}`);
             const updatedAccountingEntry=accountingEntries.filter(accountingEntriesState=>accountingEntriesState.accountingEntryId==accountingEntryId);
             setAccountingEntries(updatedAccountingEntry);
             getAccountingEntries();

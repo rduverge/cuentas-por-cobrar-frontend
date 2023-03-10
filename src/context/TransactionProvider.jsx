@@ -27,13 +27,23 @@ const TransactionProvider = ({children}) => {
 
     const saveTransaction= async(transaction)=>{
      
-        if(transaction.id){
+        if(transaction.transactionId){
             try{
-                const{data} = await axiosClient.put(`/transactions/${transaction.id}`, transaction,config);
-                const updatedTransaction = transactions.map(transactionState=>transaction.id === data.id? data:transactionState);
+                const{data} = await axiosClient.put(`/transactions/${transaction.transactionId}`, transaction,config);
+                const updatedTransaction = transactions.map(transactionState=>transaction.transactionId === data.transactionId? data:transactionState);
                 setTransactions(updatedTransaction);
+                getTransactions();
             }catch(error){
                 console.log(error);
+                return false;
+            }
+        } else {
+            try {
+                const { data } = await axiosClient.post('/transactions', transaction, config); 
+                setTransactions([...transactions, data]); 
+                console.log(data); 
+            } catch (error) {
+                console.log(error); 
                 return false;
             }
         }
@@ -42,14 +52,14 @@ const TransactionProvider = ({children}) => {
 
     const setEdit=(transaction)=>setTransaction(transaction);
 
-    const deleteTransaction = async id => {
+    const deleteTransaction = async transactionId => {
         
         const isConfirmed = confirm('Desea eliminar esta Transacción?');
         if(isConfirmed){
             try{
                 
-                const{data} = await axiosClient.delete(`/transactions/${id}`,config);
-                const updatedTransaction = transactions.filter(transactionsState=>transactionsState._id !== id);
+                const{data} = await axiosClient.delete(`/transactions/${transactionId}`,config);
+                const updatedTransaction = transactions.filter(transactionsState=>transactionsState.transactionId !== transactionId);
                 setTransactions(updatedTransaction);
             }catch(error){
                 console.log(error);
@@ -70,7 +80,8 @@ const TransactionProvider = ({children}) => {
     )
 }
 export{
-    TransactionProvider
+    TransactionProvider 
+    
 }
 
 export default TransactionContext;

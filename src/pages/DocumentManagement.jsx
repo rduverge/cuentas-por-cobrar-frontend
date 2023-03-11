@@ -3,13 +3,14 @@ import DocumentList from '../Components/Document/DocumentList'
 import { DocumentProvider } from '../context/DocumentProvider';
 import DocumentForm from '../Components/Document/DocumentForm';
 
+
 const DocumentManagement = () => {
     return (
       
         <DocumentProvider>
             
-                <DocumentForm/>
-            
+        <DocumentForm />
+        
           
          <DocumentList/>
    </DocumentProvider>

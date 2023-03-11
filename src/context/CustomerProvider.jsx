@@ -2,7 +2,9 @@ import { createContext, useState, useEffect } from "react";
 import axiosClient from "../config/axios";
 import config from "../config/header";
 
-const CustomerContext=createContext();
+const CustomerContext = createContext();
+import { swalButton } from "../Components/DeletingFile";
+import Swal from "sweetalert2";
 const CustomerProvider = ({children}) => {
 
     const[customers, setCustomers]=useState([]);
@@ -49,20 +51,46 @@ const CustomerProvider = ({children}) => {
         return true;
     }
     const setEdit=(customer)=>setCustomer(customer);
-    const deleteCustomer= async customerId=>{
-        const isConfirmed = confirm('Desea eliminar este Cliente?');
-        if(isConfirmed){
-            try{
+    const deleteCustomer = async customerId => {
+        
+        const result = await swalButton.fire({
+            title: 'Está seguro?',
+            text: 'No podra revertir los cambios!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí borralo!',
+            cancelButtonText: 'No, cancela!',
+            reverseButtons: true
+             
+        });
 
-                const{data} = await axiosClient.delete(`/customers/${customerId}`,config);
-                const updatedCustomer= customers.filter(customersState=>customersState.customerId !==customerId);
+        if (result.isConfirmed) {
+            await swalButton.fire(
+                'Borrado!',
+                'Se ha eliminado correctamente',
+                'success'
+            )
+            try {
+
+                const { data } = await axiosClient.delete(`/customers/${customerId}`, config);
+                const updatedCustomer = customers.filter(customersState => customersState.customerId !== customerId);
                 setCustomers(updatedCustomer);
                 getCustomers();
-            } catch(error){
+            } catch (error) {
                 console.log(error);
             }
+            
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            await swalButton.fire(
+                'Cancelado',
+                'Se ha salvado!', 
+                'error'
+            )
         }
-    }
+       
+           
+        }
+    
 
     return(
         <CustomerContext.Provider

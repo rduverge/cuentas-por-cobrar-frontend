@@ -7,9 +7,14 @@ import useTransaction from '../../hooks/useTransaction';
 import STATE from '../../helpers/STATE';
 import moment from 'moment/moment'; 
 import { v4 as uuidv4 } from 'uuid';
+import transactionSchema from '../../Validations/TransactionValidator';
+import * as Yup from 'yup'; 
+import Alert from '../Alert';
+import savingChangesAlert from '../SavingChanges';
 const TransactionForm = () => {
 
     const [open, setOpen] = useState(false); 
+    const [alert, setAlert] = useState({});
     const [transactionId, setTransactionId] = useState(0); 
     const [movementType, setMovementType] = useState('');
     const [documentField, setDocuments] = useState(); 
@@ -41,19 +46,36 @@ const TransactionForm = () => {
     const handleSubmit = async e => {
         e.preventDefault(); 
 
-        let result = await saveTransaction({ movementType, documentId: documentField, transactionDate, customerId:customerField, amount, transactionId, documentNumber}); 
-        if (result) {
-            console.log('Vamos bien :s'); 
-            setMovementType(''); 
-            setDocuments(); 
-            setDocumentNumber('');
-            setTransactionDate('');
-            setCustomers('');
-            setAmount(0);
-        };
+        try {
+            await transactionSchema.validate({
+                movementType, documentId: documentField,
+                transactionDate, customerId: customerField, amount, state
+            });
+            let result = await saveTransaction({ movementType, documentId: documentField, transactionDate, customerId:customerField, amount, transactionId, documentNumber}); 
+            if (result) {
+                savingChangesAlert();
+                console.log('Vamos bien :s'); 
+                setMovementType(''); 
+                setDocuments(); 
+                setDocumentNumber('');
+                setTransactionDate('');
+                setCustomers('');
+                setAmount(0);
+            };
+            setOpen(false); 
 
-        setOpen(false); 
-
+    
+            
+        } catch (err) {
+            if (err instanceof Yup.ValidationError) {
+                setAlert({
+                    msg: err.message
+                });
+            }
+            
+        }
+       
+        
     }
     const onMovementTypeChanged = e => {
         const values = e.target.value; 
@@ -67,7 +89,7 @@ const TransactionForm = () => {
     const onDocumentsChanged = e => setDocuments(e.target.value); 
     const onCustomersChanged = e => setCustomers(e.target.value); 
    
-
+    const { msg } = alert;
   return (
       <div className='relative min-h-scr'>
           <div className=' flex-col mx-auto my-2'>
@@ -78,10 +100,12 @@ const TransactionForm = () => {
               <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
                   <h1 className='text-lg text-black mt-2  text-center font-bold'> Agregue una Transacción</h1>
                   <hr />
+                  
 
                   <form
                       onSubmit={handleSubmit}
                   > 
+                      {msg&&<Alert alert={alert}/>}
                   
                   <div className='flex flex-col gap-2 pb-4'>
                           <label

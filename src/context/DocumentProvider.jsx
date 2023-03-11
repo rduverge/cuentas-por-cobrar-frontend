@@ -2,7 +2,8 @@ import { createContext, useState, useEffect } from "react";
 //Hace falta el folder config
 import axiosClient from "../config/axios";
 import config from "../config/header";
-
+import Swal from "sweetalert2";
+import { swalButton } from "../Components/DeletingFile";
 
 const DocumentContext = createContext();
 const DocumentProvider = ({children}) => {
@@ -57,10 +58,27 @@ const DocumentProvider = ({children}) => {
     }
 
     const setEdit=(document)=>setDocument(document);
-    const deleteDocument=async documentId =>{
-        const isConfirmed=confirm('Desea eliminar este documento?');
-        if(isConfirmed){
-            try{
+    const deleteDocument = async documentId => {
+        
+        const result = await swalButton.fire({
+            title: 'Está seguro?',
+            text: 'No podra revertir los cambios!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí borralo!',
+            cancelButtonText: 'No, cancela!',
+            reverseButtons: true
+             
+        });
+
+       
+        if(result.isConfirmed){
+            try {
+                await swalButton.fire(
+                    'Borrado!',
+                    'Se ha eliminado correctamente',
+                    'success'
+                )
                 
                 const{data} = await axiosClient.delete(`/documents/${documentId}`, config);
                 const updatedDocuments = documents.filter(documentsState=>documentsState.documentId==documentId);
@@ -70,6 +88,12 @@ const DocumentProvider = ({children}) => {
             } catch(error){
                 console.log(error);
             }
+        }else if (result.dismiss === Swal.DismissReason.cancel) {
+            await swalButton.fire(
+                'Cancelado',
+                'Se ha salvado!', 
+                'error'
+            )
         }
     }
 

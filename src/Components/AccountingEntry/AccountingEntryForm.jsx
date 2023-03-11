@@ -6,9 +6,14 @@ import STATE from '../../helpers/STATE';
 import useCustomer from '../../hooks/useCustomer';
 import moment from 'moment/moment';
 import MOVEMENT_TYPES from '../../helpers/MovementType';
+import * as Yup from 'yup'; 
+import accountingEntrySchema from '../../Validations/AccountingEntryValidator';
+import savingChangesAlert from '../SavingChanges';
+import Alert from '../Alert';
 const AccountingEntryForm = () => {
 
     const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState({}); 
     const [accountingEntryId, setAccountingEntryId] = useState(0);
     const [description,setDescription] = useState('');
     const [customerField, setCustomers] = useState({});
@@ -31,7 +36,7 @@ const AccountingEntryForm = () => {
             setAccount(accountingEntry.account);
             setMovementType(accountingEntry.movementType);
             setAccountEntryDate(moment(accountingEntry.accountingEntryDate).format('YYYY-MM-DD'));
-            setAccountEntryAmount(accountingEntry.accountingEntryAmount);
+            setAccountEntryAmount(accountingEntry.accountEntryAmount);
             setState(accountingEntry.state);
             setAccountingEntryId(accountingEntry.accountingEntryId);
         }
@@ -40,24 +45,42 @@ const AccountingEntryForm = () => {
     
    
     const handleSubmit = async e => {
-        e.preventDefault(); 
+        e.preventDefault();
         
-        let result = await saveAccountingEntry({ accountingEntryId, description, customerId:customerField, account, movementType, accountEntryDate, accountEntryAmount, state }); 
-        
-        
-        if (result) {
-            
-            console.log('Vamos bien :s'); 
-            setDescription(''); 
-            setCustomers(); 
-            setAccount('');
-            setMovementType('');
-            setAccountEntryDate('');
-            setAccountEntryAmount(0);
-            setState();
-        };
+        try {
 
-        setOpen(false); 
+            await accountingEntrySchema.validate({
+                description, customerId: customerField, account, movementType, accountEntryAmount, state
+            });
+            let result = await saveAccountingEntry({ accountingEntryId, description, customerId:customerField, account, movementType, accountEntryDate, accountEntryAmount, state }); 
+        
+        
+            if (result) {
+                savingChangesAlert()
+                
+                console.log('Vamos bien :s'); 
+                setDescription(''); 
+                setCustomers(); 
+                setAccount('');
+                setMovementType('');
+                setAccountEntryDate('');
+                setAccountEntryAmount(0);
+                setState();
+            };
+    
+            setOpen(false); 
+            
+        } catch (err) {
+
+            if (err instanceof Yup.ValidationError) {
+                setAlert({
+                    msg: err.message
+                });
+            }
+            
+        }
+        
+     
 
     }
     const onMovementTypeChanged = e => {
@@ -72,14 +95,9 @@ const AccountingEntryForm = () => {
 
     const onCustomersChanged = e => setCustomers(e.target.value); 
 
-    // const filteredAccountingEntries = accountingEntries.filter((entry) =>
-    //     (!customerField || entry.customer.customerId === customerField) &&
-    //     (!accountingEntryId ||
-    //         entry.accountingEntryId === parseInt(accountingEntryId))
-    // );
+    const { msg } = alert; 
 
-    // const filterActions=  accountingEntries.filter((e)=> e.cus)
-    
+   
 
    
 
@@ -93,7 +111,7 @@ const AccountingEntryForm = () => {
               <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
                   <h1 className='text-lg text-center text-black mt-2  font-bold'> Agregue un Asiento Contable</h1>
                   <hr />
-
+                  {msg&& <Alert alert={alert}/>}
                   <form
                       onSubmit={handleSubmit}
                       

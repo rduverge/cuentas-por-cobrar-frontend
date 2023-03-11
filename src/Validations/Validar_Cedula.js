@@ -1,4 +1,4 @@
-function validar_cedula(cedula) {
+const  validar_cedula=(cedula) =>{
     if (typeof cedula != "string") return false;
 
     //cleanup
@@ -45,4 +45,6 @@ function validar_cedula(cedula) {
 
     // Se comprueba el verificador
     return verificador == parseInt(cedula.slice(-1));
-  }
+}
+  
+export default validar_cedula;

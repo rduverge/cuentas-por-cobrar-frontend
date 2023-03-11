@@ -4,10 +4,19 @@ import { useState, useEffect } from "react"
 import useCustomer from "../../hooks/useCustomer"; 
 import Customer from "./Customer";
 import STATE from "../../helpers/STATE";
+import customerSchema from "../../Validations/CustomerValidator";
+import Alert from "../Alert";
+import * as Yup from 'yup';
+
+
+import savingChangesAlert from "../SavingChanges";
+
+
 
 const CustomerForm = () => {
 
     const [open, setOpen] = useState(false); 
+    const [alert, setAlert] = useState({}); 
     const [customerId, setCustomerId] = useState(0); 
     const [name, setName] = useState('');
     const [identification, setIdentification] = useState(''); 
@@ -31,22 +40,45 @@ const CustomerForm = () => {
     const handleSubmit = async e => {
         e.preventDefault(); 
 
-        let result = await saveCustomer({ customerId,name, identification, creditLimit, state }); 
+        try {
 
-        if (result) {
-            console.log('Lo estas logrando!'); 
-            setName(''); 
-            setIdentification(''); 
-            setCreditLimit(0); 
-            setState(); 
+            await customerSchema.validate({
+                name,identification,creditLimit,state,
+            }); 
 
+            let result = await saveCustomer({ customerId,name, identification, creditLimit, state }); 
+
+            if (result) {
+                savingChangesAlert()
+                
+                console.log('Lo estas logrando!'); 
+                setName(''); 
+                setIdentification(''); 
+                setCreditLimit(0); 
+                setState(); 
+    
+            }
+            setOpen(false); 
+            
+        } catch (err) {
+
+            if (err instanceof Yup.ValidationError) {
+               
+                setAlert({
+                    msg: err.message
+                });
+            }
+            
         }
-        setOpen(false); 
+
+      
     }
     const onStateChanged = e => {
         const values = e.target.value; 
         setState(values); 
     }
+
+    const { msg } = alert; 
 
   return (
     <div className='relative min-h-scr'>
@@ -58,11 +90,13 @@ const CustomerForm = () => {
         <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
             <h1 className='text-lg text-center font-bold text-black mt-2 pr-48'> Agregue un Cliente</h1>
             <hr />
-
-            <form
+            {msg&&<Alert alert={alert}/>}
+                  <form
+                      noValidate
                 onSubmit={handleSubmit}
                 
-            > 
+                  > 
+                     
             <div className='flex flex-col gap-2'>
                 <label htmlFor='nombre'>Introduzca un nombre. </label>
                 <input id="description" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'

@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect } from "react";
 import axiosClient from "../config/axios";
 import config from "../config/header";
+import Swal from "sweetalert2";
+import { swalButton } from "../Components/DeletingFile";
 
 const TransactionContext=createContext();
 const TransactionProvider = ({children}) => {
@@ -55,16 +57,38 @@ const TransactionProvider = ({children}) => {
 
     const deleteTransaction = async transactionId => {
         
-        const isConfirmed = confirm('Desea eliminar esta Transacción?');
-        if(isConfirmed){
-            try{
+        const result = await swalButton.fire({
+            title: 'Está seguro?',
+            text: 'No podra revertir los cambios!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí borralo!',
+            cancelButtonText: 'No, cancela!',
+            reverseButtons: true
+             
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                await swalButton.fire(
+                    'Borrado!',
+                    'Se ha eliminado correctamente',
+                    'success'
+                )
                 
-                const{data} = await axiosClient.delete(`/transaction/${transactionId}`,config);
-                const updatedTransaction = transactions.filter(transactionsState=>transactionsState.transactionId !== transactionId);
+                const { data } = await axiosClient.delete(`/transaction/${transactionId}`, config);
+                const updatedTransaction = transactions.filter(transactionsState => transactionsState.transactionId !== transactionId);
                 setTransactions(updatedTransaction);
-            }catch(error){
+            } catch (error) {
                 console.log(error);
             }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            await swalButton.fire(
+                'Cancelado',
+                'Se ha salvado!',
+                'error'
+            )
+       
         }
     }
     return(

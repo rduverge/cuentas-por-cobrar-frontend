@@ -4,15 +4,21 @@ import { useState, useEffect } from 'react'
 import useDocument from '../../hooks/useDocument';
 import Document from './Document';
 import STATE from '../../helpers/STATE';
+import documentSchema from '../../Validations/DocumentValidator';
+import * as Yup from 'yup';
+import Alert from '../Alert';
+import savingChangesAlert from '../SavingChanges';
 const DocumentForm = () => {
 
     const [open, setOpen] = useState(false); 
+    const [alert, setAlert] = useState({}); 
     const [documentId, setDocumentId] = useState(0); 
     const [description, setDescription] = useState('');
     const [ledgerAccount, setLedgerAccount] = useState(0); 
     const [state, setState] = useState('');
-    const { saveDocument, document} = useDocument();
-
+    const { saveDocument, document } = useDocument();
+    
+   
     useEffect(() => {
         if (document?.documentId) {
             setOpen(true); 
@@ -24,26 +30,51 @@ const DocumentForm = () => {
         
     }, [document]);
     
-    const handleSubmit = async e => {
-        e.preventDefault(); 
+    const handlingSubmit =async(e) => {
+       e.preventDefault(); 
 
-        let result = await saveDocument({ documentId,description, ledgerAccount, state }); 
-        if (result) {
-            console.log('Lo estas logrando!'); 
-            setDescription(''); 
-            setLedgerAccount(0); 
-            setState();
-        };
+        try {
+            await documentSchema.validate({
+                description,
+                ledgerAccount,
+                state
+            });
+            let result = await saveDocument({ documentId, description, ledgerAccount, state }); 
+            if (result) {
+                savingChangesAlert();
+                console.log('Lo estas logrando!'); 
+                setDescription(''); 
+                setLedgerAccount(0); 
+                setState();
+            };
+            setOpen(false); 
+        } catch (err) {
+           
+            
+            if (err instanceof Yup.ValidationError) {
+                setAlert({
+                    msg: err.message
+                });
+            }
+          
+        }
 
-        setOpen(false); 
+
+
+      
+    
+
+      
 
     }
+    
+
     const onStateChanged = e => {
         const values = e.target.value; 
         setState(values)
     }; 
 
-   
+    const { msg } = alert;
 
   return (
       <div className='relative min-h-scr'>
@@ -55,17 +86,23 @@ const DocumentForm = () => {
               <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
                   <h1 className='text-xl text-black mt-2 font-bold pr-48'> Agregue un tipo de documento</h1>
                   <hr />
-
+                  {msg &&<Alert alert={alert}/>}
                   <form
-                      onSubmit={handleSubmit}
+                      noValidate
+                      onSubmit={handlingSubmit}
+                     
                       
                   > 
+                    
                   <div className='flex flex-col gap-2'>
                       <label htmlFor='description'>Introduzca una descripcion. </label>
-                      <input id="description" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
+                          <input id="description" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
+                            
                           value={description}
-                          onChange={e=>setDescription(e.target.value)}
-                      />
+                          onChange={(e)=>setDescription(e.target.value)} 
+                          />
+                         
+                         
                   </div>
                   <hr />
 

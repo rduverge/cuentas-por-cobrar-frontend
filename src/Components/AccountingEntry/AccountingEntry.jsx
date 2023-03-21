@@ -72,19 +72,7 @@ const AccountingEntry = ({ accountingEntry } ) => {
                   
               </td>
 
-              <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                  <button 
-                      type="button"
-                      className="text-green-500 hover:Text-green-700 rounded-lg"
-                    onClick={()=>setEdit(accountingEntry)}>Editar</button>
-              </td>
-              <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-              <button 
-                      type="button"
-                      className="text-red-500 hover:Text-red-700 rounded-lg"
-                    onClick={()=>deleteAccountingEntry(accountingEntryId)}>Borrar</button>
-                  
-              </td>
+            
           </tr>
          
   )

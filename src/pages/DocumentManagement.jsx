@@ -8,11 +8,12 @@ const DocumentManagement = () => {
     return (
       
         <DocumentProvider>
-            
+        <div className='mx-auto px-10'>
         <DocumentForm />
         
           
-         <DocumentList/>
+          <DocumentList />
+          </div>
    </DocumentProvider>
   )
 }

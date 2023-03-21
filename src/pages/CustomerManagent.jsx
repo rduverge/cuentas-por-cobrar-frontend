@@ -6,14 +6,15 @@ import { CustomerProvider } from '../context/CustomerProvider';
 
 const CustomerManagement = () => {
     return (
-      
+      <div className='mx-auto px-10'>
         <CustomerProvider>
             
                 
             
           <CustomerForm/>
          <CustomerList/>
-   </CustomerProvider>
+        </CustomerProvider>
+        </div>
   )
 }
 

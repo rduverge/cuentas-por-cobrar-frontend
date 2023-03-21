@@ -9,12 +9,14 @@ import moment from 'moment/moment';
 import { v4 as uuidv4 } from 'uuid';
 import transactionSchema from '../../Validations/TransactionValidator';
 import * as Yup from 'yup'; 
-import Alert from '../Alert';
+
 import savingChangesAlert from '../SavingChanges';
+import Swal from 'sweetalert2';
 const TransactionForm = () => {
 
+
     const [open, setOpen] = useState(false); 
-    const [alert, setAlert] = useState({});
+   
     const [transactionId, setTransactionId] = useState(0); 
     const [movementType, setMovementType] = useState('');
     const [documentField, setDocuments] = useState(); 
@@ -63,19 +65,17 @@ const TransactionForm = () => {
                 setAmount(0);
             };
             setOpen(false); 
-
-    
             
         } catch (err) {
             if (err instanceof Yup.ValidationError) {
-                setAlert({
-                    msg: err.message
-                });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${err.message}`,
+                    
+                  })
             }
-            
         }
-       
-        
     }
     const onMovementTypeChanged = e => {
         const values = e.target.value; 
@@ -89,11 +89,11 @@ const TransactionForm = () => {
     const onDocumentsChanged = e => setDocuments(e.target.value); 
     const onCustomersChanged = e => setCustomers(e.target.value); 
    
-    const { msg } = alert;
+   
   return (
       <div className='relative min-h-scr'>
           <div className=' flex-col mx-auto my-2'>
-              <button onClick={()=>setOpen(!open)} className="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full">Agregar Transacción</button>
+              <button onClick={()=>setOpen(!open)} className="py-2 px-4  bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg rounded-full uppercase">Agregar Transacción</button>
           </div>
 
           {open ? <Modal>
@@ -101,12 +101,9 @@ const TransactionForm = () => {
                   <h1 className='text-lg text-black mt-2  text-center font-bold'> Agregue una Transacción</h1>
                   <hr />
                   
-
                   <form
                       onSubmit={handleSubmit}
                   > 
-                      {msg&&<Alert alert={alert}/>}
-                  
                   <div className='flex flex-col gap-2 pb-4'>
                           <label
                               className=''

@@ -5,8 +5,8 @@ import useCustomer from "../../hooks/useCustomer";
 import Customer from "./Customer";
 import STATE from "../../helpers/STATE";
 import customerSchema from "../../Validations/CustomerValidator";
-import Alert from "../Alert";
 import * as Yup from 'yup';
+import Swal from "sweetalert2";
 
 
 import savingChangesAlert from "../SavingChanges";
@@ -16,7 +16,6 @@ import savingChangesAlert from "../SavingChanges";
 const CustomerForm = () => {
 
     const [open, setOpen] = useState(false); 
-    const [alert, setAlert] = useState({}); 
     const [customerId, setCustomerId] = useState(0); 
     const [name, setName] = useState('');
     const [identification, setIdentification] = useState(''); 
@@ -64,9 +63,12 @@ const CustomerForm = () => {
 
             if (err instanceof Yup.ValidationError) {
                
-                setAlert({
-                    msg: err.message
-                });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${err.message}`,
+                    
+                  })
             }
             
         }
@@ -78,23 +80,19 @@ const CustomerForm = () => {
         setState(values); 
     }
 
-    const { msg } = alert; 
-
   return (
     <div className='relative min-h-scr'>
     <div className=' flex-col  my-2'>
-        <button onClick={()=>setOpen(!open)} className="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg rounded-full">Agregar Cliente </button>
+        <button onClick={()=>setOpen(!open)} className="py-2 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg rounded-full uppercase">Agregar Cliente </button>
     </div>
 
     {open ? <Modal>
         <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
             <h1 className='text-lg text-center font-bold text-black mt-2 pr-48'> Agregue un Cliente</h1>
             <hr />
-            {msg&&<Alert alert={alert}/>}
                   <form
                       noValidate
                 onSubmit={handleSubmit}
-                
                   > 
                      
             <div className='flex flex-col gap-2'>

@@ -9,19 +9,21 @@ import { DocumentProvider } from '../context/DocumentProvider';
 
 const TransactionManagement = () => {
     return (
-      
+      <div className='mx-auto px-10'>
       <TransactionProvider>
         <CustomerProvider>
             <DocumentProvider>
             
+          
                 <TransactionForm /> 
             </DocumentProvider>
         </CustomerProvider>
 
           
           <TransactionList />
-        
-   </TransactionProvider>
+      
+        </TransactionProvider>
+        </div>
   )
 }
 

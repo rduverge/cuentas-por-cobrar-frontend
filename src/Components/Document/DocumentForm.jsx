@@ -6,15 +6,15 @@ import Document from './Document';
 import STATE from '../../helpers/STATE';
 import documentSchema from '../../Validations/DocumentValidator';
 import * as Yup from 'yup';
-import Alert from '../Alert';
 import savingChangesAlert from '../SavingChanges';
+import Swal from 'sweetalert2';
 const DocumentForm = () => {
 
     const [open, setOpen] = useState(false); 
-    const [alert, setAlert] = useState({}); 
+   
     const [documentId, setDocumentId] = useState(0); 
     const [description, setDescription] = useState('');
-    const [ledgerAccount, setLedgerAccount] = useState(0); 
+    const [ledgerAccount, setLedgerAccount] = useState(5); 
     const [state, setState] = useState('');
     const { saveDocument, document } = useDocument();
     
@@ -52,19 +52,15 @@ const DocumentForm = () => {
            
             
             if (err instanceof Yup.ValidationError) {
-                setAlert({
-                    msg: err.message
-                });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${err.message}`,
+                    
+                  })
             }
           
         }
-
-
-
-      
-    
-
-      
 
     }
     
@@ -74,26 +70,22 @@ const DocumentForm = () => {
         setState(values)
     }; 
 
-    const { msg } = alert;
 
   return (
       <div className='relative min-h-scr'>
           <div className=' flex-col  my-2'>
-              <button onClick={()=>setOpen(!open)} className="py-3 px-4 bg-blue-500 hover:bg-blue-900  text-white font-bold text-lg rounded-full">Agregar Documento</button>
+              <button onClick={()=>setOpen(!open)} className="py-3 px-4 bg-amber-500 hover:bg-amber-600  text-white font-bold text-lg rounded-full uppercase">Agregar Documento</button>
           </div>
 
           {open ? <Modal>
               <div className='flex flex-col gap-2 bg-white px-4 pb-4 rounded-lg'>
                   <h1 className='text-xl text-black mt-2 font-bold pr-48'> Agregue un tipo de documento</h1>
                   <hr />
-                  {msg &&<Alert alert={alert}/>}
+                
                   <form
                       noValidate
-                      onSubmit={handlingSubmit}
-                     
-                      
+                      onSubmit={handlingSubmit} 
                   > 
-                    
                   <div className='flex flex-col gap-2'>
                       <label htmlFor='description'>Introduzca una descripcion. </label>
                           <input id="description" type="text" className='py-2 px-4 border border-gray-200 rounded-lg'
@@ -107,8 +99,8 @@ const DocumentForm = () => {
                   <hr />
 
                   <div className='flex flex-col gap-2'>
-                      <label htmlFor='ledgerAccount'>Introduzca Cuenta Contable. </label>
-                      <input id="ledgerAccount" type="number" className='py-2 px-4 border border-gray-200 rounded-lg'
+                      <label htmlFor='ledgerAccount'>Cuenta Contable. </label>
+                      <input id="ledgerAccount" readOnly type="number" className='py-2 px-4 border border-gray-200 rounded-lg'
                           value={ledgerAccount}
                           onChange={e=>setLedgerAccount(e.target.value)}
                       />
